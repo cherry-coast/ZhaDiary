@@ -1,14 +1,12 @@
 <script setup>
 import { ref, computed } from 'vue'
-import Header from './components/Header.vue'
-import PostList from './components/PostList.vue'
-import PostForm from './components/PostForm.vue'
-import PostDetail from './components/PostDetail.vue'
-import BottomNav from './components/BottomNav.vue'
-import CategoryModal from './components/CategoryModal.vue'
-import CategorySidebar from './components/CategorySidebar.vue'
-import LoginModal from './components/LoginModal.vue'
-import UserProfileModal from './components/UserProfileModal.vue'
+import WebHome from './views/web/Home.vue'
+import MobileHome from './views/mobile/Home.vue'
+import PostForm from './components/common/PostForm.vue'
+import PostDetail from './components/common/PostDetail.vue'
+import CategoryModal from './components/mobile/CategoryModal.vue'
+import LoginModal from './components/common/LoginModal.vue'
+import UserProfileModal from './components/common/UserProfileModal.vue'
 
 const posts = ref([
   {
@@ -279,116 +277,41 @@ const submitMobileSearch = () => {
 <template>
   <div class="app-container">
     <div class="main-view">
-      <div class="desktop-layout">
-        <Header 
-          :totalPosts="totalPosts" 
-          :totalComments="totalComments"
-          :categories="allCategories"
-          :selectedCategories="selectedCategories"
-          :filteredCount="filteredPosts.length"
-          :currentUser="currentUser"
-          @openPostForm="openPostForm"
-          @search="handleSearch"
-          @openLogin="showLoginModal = true"
-          @openProfile="showUserProfile = true"
-          @logout="currentUser = null"
-        />
-        
-        <div class="desktop-body">
-          <aside class="desktop-sidebar">
-            <CategorySidebar 
-              :selectedCategories="selectedCategories"
-              :allCategories="allCategories"
-              :postCounts="postCounts"
-              @toggleCategory="handleDesktopCategoryToggle"
-            />
-          </aside>
-          
-          <div class="desktop-content">
-            <main class="main-content">
-              <PostList 
-                :posts="filteredPosts"
-                @toggleLike="toggleLike"
-                @viewDetail="viewDetail"
-              />
-            </main>
-            
-            <div class="mock-data-note">
-              当前使用本地模拟数据，接口接入后再启用分页加载。
-            </div>
-            
-            <button class="desktop-post-btn" @click="openPostForm">
-              <svg viewBox="0 0 32 32" class="watermelon-icon">
-                <!-- Watermelon Slice (Perfectly Semicircular) -->
-                <!-- Green Rind -->
-                <path d="M2 12h28A14 14 0 0 1 2 12z" fill="#2f9e44" />
-                <!-- White Rind -->
-                <path d="M3.5 12h25A12.5 12.5 0 0 1 3.5 12z" fill="#fff" />
-                <!-- Red Flesh -->
-                <path d="M5 12h22A11 11 0 0 1 5 12z" fill="#ff4f68" />
-                
-                <!-- Seeds -->
-                <circle cx="10" cy="15.5" r="0.8" fill="#2d211f" />
-                <circle cx="22" cy="15.5" r="0.8" fill="#2d211f" />
-                <circle cx="12.5" cy="18.5" r="0.8" fill="#2d211f" />
-                <circle cx="19.5" cy="18.5" r="0.8" fill="#2d211f" />
-                
-                <!-- Bite Hole -->
-                <circle class="bite-hole" cx="14" cy="12.5" r="3.5" fill="#fff" />
-                
-                <!-- Spoon Group -->
-                <g class="spoon-group">
-                  <line x1="22.5" y1="9.5" x2="30" y2="2" stroke="#8a736b" stroke-width="1.6" stroke-linecap="round" />
-                  <ellipse cx="21" cy="11" rx="3.5" ry="2.2" transform="rotate(-45 21 11)" fill="#ffffff" stroke="#8a736b" stroke-width="1.2" />
-                  <!-- Scooped flesh and seed inside spoon -->
-                  <circle class="scooped-flesh" cx="21" cy="11" r="2.2" fill="#ff4f68" />
-                  <circle class="scooped-seed" cx="21.5" cy="11.5" r="0.4" fill="#2d211f" />
-                </g>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
+      <WebHome
+        :totalPosts="totalPosts"
+        :totalComments="totalComments"
+        :allCategories="allCategories"
+        :selectedCategories="selectedCategories"
+        :filteredPosts="filteredPosts"
+        :currentUser="currentUser"
+        :postCounts="postCounts"
+        @openPostForm="openPostForm"
+        @search="handleSearch"
+        @openLogin="showLoginModal = true"
+        @openProfile="showUserProfile = true"
+        @logout="currentUser = null"
+        @toggleCategory="handleDesktopCategoryToggle"
+        @toggleLike="toggleLike"
+        @viewDetail="viewDetail"
+      />
       
-      <div class="mobile-layout">
-        <header class="mobile-topbar">
-          <div class="mobile-brand">
-            <img src="/吃瓜.svg" class="mobile-logo" alt="吃瓜日记" />
-            <div>
-              <h1>吃瓜日记</h1>
-              <p>{{ feedTitle }}</p>
-            </div>
-          </div>
-          <form class="mobile-search" @submit.prevent="submitMobileSearch">
-            <input
-              v-model="mobileSearchQuery"
-              type="search"
-              placeholder="搜索瓜、作者或分类"
-            />
-            <button type="submit">搜索</button>
-          </form>
-        </header>
-
-        <main class="main-content">
-          <PostList 
-            :posts="filteredPosts"
-            @toggleLike="toggleLike"
-            @viewDetail="viewDetail"
-          />
-        </main>
-        
-        <BottomNav 
-          :selectedCategories="selectedCategories"
-          :totalPosts="totalPosts"
-          :hasActiveFilters="hasActiveFilters"
-          :currentUser="currentUser"
-          @home="resetHome"
-          @category="showCategoryModal = true"
-          @post="openPostForm"
-          @openLogin="showLoginModal = true"
-          @openProfile="showUserProfile = true"
-        />
-      </div>
+      <MobileHome
+        :feedTitle="feedTitle"
+        v-model:mobileSearchQuery="mobileSearchQuery"
+        :filteredPosts="filteredPosts"
+        :selectedCategories="selectedCategories"
+        :totalPosts="totalPosts"
+        :hasActiveFilters="hasActiveFilters"
+        :currentUser="currentUser"
+        @submitMobileSearch="submitMobileSearch"
+        @toggleLike="toggleLike"
+        @viewDetail="viewDetail"
+        @resetHome="resetHome"
+        @openCategory="showCategoryModal = true"
+        @openPostForm="openPostForm"
+        @openLogin="showLoginModal = true"
+        @openProfile="showUserProfile = true"
+      />
     </div>
 
     <PostForm 
