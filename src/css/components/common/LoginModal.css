@@ -368,3 +368,45 @@
   opacity: 0;
   transform: translateX(30px);
 }
+
+.login-method-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #f0e8e6;
+  padding-bottom: 10px;
+}
+
+.method-tab {
+  font-size: 0.95rem;
+  color: #8e807a;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  padding: 4px 8px;
+  transition: all 0.25s ease;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.method-tab:hover {
+  color: #ff4f68;
+}
+
+.method-tab.active {
+  color: #ff4f68;
+  font-weight: 700;
+}
+
+.method-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -11px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ff4f68, #ff7388);
+  border-radius: 3px 3px 0 0;
+}

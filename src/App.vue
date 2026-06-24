@@ -20,7 +20,18 @@ const selectedCategories = ref<string[]>([])
 const customCategories = ref<string[]>([])
 const showLoginModal = ref(false)
 const showUserProfile = ref(false)
-const currentUser = ref<User | null>(null)
+const getSavedUser = (): User | null => {
+  try {
+    const saved = localStorage.getItem('user')
+    if (saved) {
+      return JSON.parse(saved)
+    }
+  } catch (e) {
+    console.error('Failed to parse saved user', e)
+  }
+  return null
+}
+const currentUser = ref<User | null>(getSavedUser())
 
 const totalPosts = computed(() => posts.value.length)
 const totalComments = computed(() => 
@@ -152,6 +163,12 @@ const resetHome = () => {
 const submitMobileSearch = () => {
   searchQuery.value = mobileSearchQuery.value.trim()
 }
+
+const handleLogout = () => {
+  currentUser.value = null
+  localStorage.removeItem('token')
+  localStorage.removeItem('user')
+}
 </script>
 
 <template>
@@ -169,7 +186,7 @@ const submitMobileSearch = () => {
         @search="handleSearch"
         @openLogin="showLoginModal = true"
         @openProfile="showUserProfile = true"
-        @logout="currentUser = null"
+        @logout="handleLogout"
         @toggleCategory="handleDesktopCategoryToggle"
         @toggleLike="toggleLike"
         @viewDetail="viewDetail"

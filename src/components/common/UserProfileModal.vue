@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import type { User } from '@/types'
+import { message } from '@/utils/message'
 
 const props = withDefaults(defineProps<{
   visible?: boolean
@@ -37,11 +38,11 @@ const handleSave = () => {
   // Basic validation if trying to change password
   if (newPassword.value || confirmPassword.value) {
     if (!oldPassword.value) {
-      alert('请输入原密码')
+      message.warning('请输入原密码')
       return
     }
     if (newPassword.value !== confirmPassword.value) {
-      alert('两次输入的新密码不一致')
+      message.warning('两次输入的新密码不一致')
       return
     }
   }

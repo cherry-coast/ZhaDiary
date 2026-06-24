@@ -197,3 +197,132 @@ body {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* Custom Toast Messages */
+#message-container {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+  width: 100%;
+  max-width: 400px;
+  padding: 0 16px;
+}
+
+.message-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  pointer-events: auto;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 16px -6px rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: #2d211f;
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  width: max-content;
+  max-width: 100%;
+  
+  &.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  &.hide {
+    transform: translateY(-16px);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .message-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  .message-content {
+    line-height: 1.4;
+    word-break: break-all;
+  }
+
+  /* Specific styles per type */
+  &.success {
+    background: rgba(240, 253, 244, 0.94);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #166534;
+    .message-icon { color: #22c55e; }
+  }
+
+  &.error {
+    background: rgba(254, 242, 242, 0.94);
+    border-color: rgba(248, 113, 113, 0.3);
+    color: #991b1b;
+    .message-icon { color: #ef4444; }
+  }
+
+  &.warning {
+    background: rgba(255, 251, 235, 0.94);
+    border-color: rgba(251, 191, 36, 0.3);
+    color: #92400e;
+    .message-icon { color: #f59e0b; }
+  }
+
+  &.info {
+    background: rgba(240, 249, 255, 0.94);
+    border-color: rgba(56, 189, 248, 0.3);
+    color: #075985;
+    .message-icon { color: #0ea5e9; }
+  }
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .message-item {
+    background: rgba(30, 30, 30, 0.92);
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #f3f4f6;
+
+    &.success {
+      background: rgba(20, 83, 45, 0.94);
+      border-color: rgba(34, 197, 94, 0.2);
+      color: #bbf7d0;
+      .message-icon { color: #4ade80; }
+    }
+
+    &.error {
+      background: rgba(127, 29, 29, 0.94);
+      border-color: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      .message-icon { color: #f87171; }
+    }
+
+    &.warning {
+      background: rgba(120, 53, 4, 0.94);
+      border-color: rgba(245, 158, 11, 0.2);
+      color: #fde68a;
+      .message-icon { color: #fbbf24; }
+    }
+
+    &.info {
+      background: rgba(12, 74, 110, 0.94);
+      border-color: rgba(14, 165, 233, 0.2);
+      color: #bae6fd;
+      .message-icon { color: #38bdf8; }
+    }
+  }
+}
